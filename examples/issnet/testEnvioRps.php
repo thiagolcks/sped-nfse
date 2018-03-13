@@ -33,7 +33,7 @@ $contentpfx = file_get_contents('/var/www/sped/sped-nfse/certs/certificado.pfx')
 
 try {
 
-    $nfse = new NFSe($config, Certificate::readPfx($contentpfx, 'senha'));
+    $nfse = new NFSe($configJson, Certificate::readPfx($contentpfx, 'senha'));
     //Por ora apenas o SoapCurl funciona com IssNet
     $nfse->tools->loadSoapClass(new SoapCurl());
     //caso o mode debug seja ativado serão salvos em arquivos 
@@ -62,7 +62,7 @@ try {
     
     $timezone = new \DateTimeZone('America/Cuiaba');
     $rps->dataEmissao(new \DateTime("now", $timezone));
-    $rps->municipioPrestacaoServico('999'); //999 em ambiente de produção
+    $rps->municipioPrestacaoServico('999'); //999 em ambiente de homologação
     $rps->naturezaOperacao($rps::NATUREZA_INTERNA);
     $rps->itemListaServico('802');
     $rps->codigoCnae('8599601');
@@ -104,8 +104,8 @@ try {
     
 } catch (\NFePHP\Common\Exception\SoapException $e) {
     echo $e->getMessage();
-} catch (NFePHP\Common\Exception\CertificateException $e) {
+} catch (\NFePHP\Common\Exception\CertificateException $e) {
     echo $e->getMessage();
-} catch (Exception $e) {
+} catch (\Exception $e) {
     echo $e->getMessage();
 }    
